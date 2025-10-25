@@ -6,14 +6,19 @@ import UserFormHeader from "@/components/ui/UserFormHeader";
 import Input from "@/components/ui/Input";
 import SubmitBtn from "@/components/ui/SubmitBtn";
 import UserFormRedirectFooter from "@/components/ui/UserFormRedirectFooter";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
 
 import { registerAction } from "@/actions/register";
 import { initialState } from "@/lib/formStates/registerState";
 
 export default function Register() {
-  const [state, formAction] = useActionState(registerAction, initialState);
+  const [state, formAction, pending] = useActionState(
+    registerAction,
+    initialState
+  );
   return (
     <>
+      {pending && <LoadingOverlay />}
       {/* Header */}
       <UserFormHeader
         headerLabel="Create Your Account"
