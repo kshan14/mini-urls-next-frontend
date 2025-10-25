@@ -1,0 +1,2 @@
+export const InternalServerErrMsg =
+  "Something went wrong! Please try again later.";
