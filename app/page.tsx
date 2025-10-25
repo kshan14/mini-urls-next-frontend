@@ -1,3 +1,5 @@
+import HeaderBar from "@/components/ui/HeaderBar";
+
 export default function Home() {
-  return <div>I am root page</div>;
+  return <HeaderBar isAdmin isLoggedIn />;
 }

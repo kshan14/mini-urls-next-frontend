@@ -6,14 +6,19 @@ import UserFormHeader from "@/components/ui/UserFormHeader";
 import Input from "@/components/ui/Input";
 import SubmitBtn from "@/components/ui/SubmitBtn";
 import UserFormRedirectFooter from "@/components/ui/UserFormRedirectFooter";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
 
 import { loginAction } from "@/actions/login";
 import { initialState } from "@/lib/formStates/loginState";
 
 export default function Login() {
-  const [state, formAction] = useActionState(loginAction, initialState);
+  const [state, formAction, pending] = useActionState(
+    loginAction,
+    initialState
+  );
   return (
     <>
+      {pending && <LoadingOverlay />}
       {/* Header */}
       <UserFormHeader
         headerLabel="Login to your Account"
