@@ -15,7 +15,7 @@ export function getEnv(): EnvConfig {
   try {
     const env = {
       API_BASE_URL: process.env.API_BASE_URL,
-      JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
+      JWT_SECRET_KEY: atob(process.env.JWT_SECRET_KEY ?? ""),
       WS_BASE_URL: process.env.WS_BASE_URL,
       NODE_ENV: process.env.NODE_ENV,
     };
@@ -27,6 +27,5 @@ export function getEnv(): EnvConfig {
 
 // initiate singleton instance
 const env = getEnv();
-console.log("Parsing");
 
 export default env;

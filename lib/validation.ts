@@ -35,6 +35,17 @@ export const registerUserSchema = z
     path: ["confirmPassword"],
   });
 
+export const createMiniUrlSchema = z.object({
+  url: z
+    .url("Url is invalid")
+    .nonempty("Url is required")
+    .max(2000, "Url cannot exceed 2000 characters"),
+  description: z
+    .string()
+    .nonempty("Description is required")
+    .max(2000, "Description cannot exceed 2000 characters"),
+});
+
 export function validateSchema<T extends ZodObject<any>>(
   schema: T,
   data: unknown

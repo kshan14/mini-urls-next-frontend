@@ -1,20 +1,25 @@
 "use server";
 
 import env from "@/lib/env";
-import { LoginRequest, LoginResponse } from "@/lib/apis/login/types";
+import {
+  CreateMiniUrlRequest,
+  CreateMiniUrlResponse,
+} from "@/lib/apis/miniurls/types";
 import { ErrorResponse } from "@/lib/apis/commonTypes";
 import { InternalServerErrMsg } from "@/lib/apis/commonConsts";
 
-export async function loginAPI(
-  req: LoginRequest
-): Promise<{ data?: LoginResponse; err?: string }> {
-  const url = `${env.API_BASE_URL}/api/login`;
+export async function createMiniUrlAPI(
+  authToken: string,
+  req: CreateMiniUrlRequest
+): Promise<{ data?: CreateMiniUrlResponse; err?: string }> {
+  const url = `${env.API_BASE_URL}/api/miniurls`;
   try {
     // 1. send API request
     const resp = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
       },
       body: JSON.stringify(req),
     });
@@ -25,12 +30,12 @@ export async function loginAPI(
     // 3. Http Status Okay. just type cast and return
     if (resp.ok) {
       return {
-        data: jsonData as LoginResponse,
+        data: jsonData as CreateMiniUrlResponse,
       };
     }
 
     // 4. not okay. check error structure follows error schema
-    console.error(`login failed: ${jsonData}`);
+    console.error(`create mini url failed: ${jsonData}`);
     return {
       err:
         (jsonData as ErrorResponse)?.errors?.[0]?.message ??
@@ -38,7 +43,7 @@ export async function loginAPI(
     };
   } catch (err) {
     // 5. something unexpected happens returns Internal Server Err Message
-    console.error(`login error: ${err}`);
+    console.error(`create mini url error: ${err}`);
     return {
       err: InternalServerErrMsg,
     };
