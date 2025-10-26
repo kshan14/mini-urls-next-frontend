@@ -37,17 +37,19 @@ const HeaderBar = ({
     links = [...userLinks, ...adminAdditionalLink];
   }
   const renderedLinks = links.map((l) => (
-    <Link key={l.label} className="hover:text-blue-500 font-bold" href={l.link}>
-      {l.label}
-    </Link>
+    <div className="flex-1 text-center whitespace-nowrap md:p-2" key={l.label}>
+      <Link className="hover:text-blue-500 font-bold" href={l.link}>
+        {l.label}
+      </Link>
+    </div>
   ));
 
   return (
     <header className="shadow-sm border-b border-gray-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="sm:w-full md:w-11/12 lg:w-9/12 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* left side header content */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-between">
             <div className="h-8 w-8 rounded-md flex items-center justify-center">
               <svg
                 className="text-blue-600"
@@ -62,9 +64,33 @@ const HeaderBar = ({
             </span>
           </div>
           {/* right side header content */}
-          <div className="flex items-center space-x-4 sm:w-8/12 lg:w-5/12">
+          <div className="flex items-center sm:space-x-0 md:space-x-2">
             {renderedLinks}
-            <HeaderBarLogoutBtn />
+            {isLoggedIn ? (
+              <HeaderBarLogoutBtn />
+            ) : (
+              <Link
+                href={"/login"}
+                className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-sm flex items-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                  <polyline points="10 17 15 12 10 7" />
+                  <line x1="15" y1="12" x2="3" y2="12" />
+                </svg>
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>

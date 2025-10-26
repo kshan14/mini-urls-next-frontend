@@ -1,0 +1,35 @@
+import React from "react";
+
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+import HeaderBar from "@/components/ui/HeaderBar";
+
+import { parseJWTToken } from "@/lib/jwt";
+
+interface AuthLayoutProps {
+  children: React.ReactNode;
+}
+
+export default async function AuthLayout({ children }: AuthLayoutProps) {
+  // 1. get jwt data
+  const cookieStore = await cookies();
+  const resp = await parseJWTToken(cookieStore);
+
+  // 2. check loggedIn and role
+  const isLoggedIn = resp.data ? true : false;
+  const isAdmin = isLoggedIn && resp.data?.role === "Admin";
+
+  if (!isLoggedIn) {
+    redirect("/login");
+  }
+
+  return (
+    <div className="w-full h-full flex flex-col">
+      <HeaderBar isLoggedIn={isLoggedIn} isAdmin={isAdmin} />
+      <div className="flex-2 flex flex-col items-center relative">
+        {children}
+      </div>
+    </div>
+  );
+}
