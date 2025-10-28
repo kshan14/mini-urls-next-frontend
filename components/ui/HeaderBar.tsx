@@ -14,7 +14,7 @@ const userLinks = [
     label: "Create New",
   },
   {
-    link: "/my-urls",
+    link: "/urls",
     label: "My Urls",
   },
 ];
@@ -46,7 +46,7 @@ const HeaderBar = ({
 
   return (
     <header className="shadow-sm border-b border-gray-300">
-      <div className="sm:w-full md:w-11/12 lg:w-9/12 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="sm:w-full md:w-11/12 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* left side header content */}
           <div className="flex items-center justify-between">

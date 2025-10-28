@@ -1,4 +1,4 @@
-import { ActionState } from "@/actions/createMiniUrl";
+import { ActionState } from "@/actions/miniurl";
 
 export const initialState: ActionState = {
   url: "",

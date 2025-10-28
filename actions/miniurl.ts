@@ -3,7 +3,17 @@
 import { cookies } from "next/headers";
 
 import { createMiniUrlSchema, validateSchema } from "@/lib/validation";
-import { createMiniUrlAPI } from "@/lib/apis/miniurls";
+import {
+  createMiniUrlAPI,
+  approveMiniUrlAPI,
+  denyMiniUrlAPI,
+  deleteMiniUrlAPI,
+} from "@/lib/apis/miniurls";
+import {
+  ApprovedUrlStatus,
+  RejectedUrlStatus,
+  UrlStatus,
+} from "@/lib/apis/miniurls/types";
 
 export type ActionState = {
   errors?: {
@@ -62,4 +72,34 @@ export async function createMiniUrlAction(
       url: resp.data?.url ?? "",
     },
   };
+}
+
+export async function updateMiniUrlStatusAction(
+  id: string,
+  updateStatus: UrlStatus
+): Promise<string | null> {
+  // get auth token from cookies
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("auth")?.value ?? "";
+  // invoke different api based on update status
+  const apiMap = {
+    [ApprovedUrlStatus]: approveMiniUrlAPI,
+    [RejectedUrlStatus]: denyMiniUrlAPI,
+  };
+
+  const apiFunc = apiMap[updateStatus];
+  if (!apiFunc) return null;
+
+  const errResp = await apiFunc(authToken, id);
+  return errResp.err ?? null;
+}
+
+export async function deleteMiniUrlAction(id: string): Promise<string | null> {
+  // get auth token from cookies
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("auth")?.value ?? "";
+
+  // invoke delete api
+  const resp = await deleteMiniUrlAPI(authToken, id);
+  return resp.err ?? null;
 }

@@ -6,7 +6,7 @@ import Input from "@/components/ui/Input";
 import UserFormHeader from "@/components/ui/UserFormHeader";
 import SubmitBtn from "@/components/ui/SubmitBtn";
 
-import { createMiniUrlAction } from "@/actions/createMiniUrl";
+import { createMiniUrlAction } from "@/actions/miniurl";
 import { initialState } from "@/lib/formStates/createMiniUrlState";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import MiniUrlCreationSuccessMessage from "@/components/ui/MiniUrlCreationSuccessMessage";
