@@ -127,6 +127,7 @@ export default function MiniUrlTable({
     const currentRecord = rows.find((r) => r.id === id)!;
     // 1. Update the target record to particular status
     updateRow(id, {
+      isUpdatePerforming: true,
       updatingStatus: "Deleting...",
     });
     // 2. Invoke server action

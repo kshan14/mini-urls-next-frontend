@@ -21,6 +21,10 @@ export default function CopyToClipboardBtn({
       });
     } catch (err) {
       console.error("Failed to copy: ", err);
+      toast.error("Failed to copy to clipboard!", {
+        duration: 2000,
+        position: "top-center",
+      });
     }
   };
   return (
