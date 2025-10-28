@@ -11,3 +11,13 @@ export interface ErrorResponse {
   timestamp: string;
   errors: ErrFieldMsg[];
 }
+
+export interface PaginationResponse<T> {
+  data: T[];
+  length: number;
+  totalCount: number;
+}
+
+export const UserRole: Role = "User";
+export const AdminRole: Role = "Admin";
+export type Role = "Admin" | "User";

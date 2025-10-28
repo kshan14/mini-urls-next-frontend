@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import HeaderBar from "@/components/ui/HeaderBar";
 
 import { parseJWTToken } from "@/lib/jwt";
+import { AdminRole } from "@/lib/apis/commonTypes";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -18,7 +19,7 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
 
   // 2. check loggedIn and role
   const isLoggedIn = resp.data ? true : false;
-  const isAdmin = isLoggedIn && resp.data?.role === "Admin";
+  const isAdmin = isLoggedIn && resp.data?.role === AdminRole;
 
   if (!isLoggedIn) {
     redirect("/login");
