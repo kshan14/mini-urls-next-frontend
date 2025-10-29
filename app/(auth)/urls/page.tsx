@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 
 import UrlTableFilter from "@/components/ui/UrlTableFilter";
 import UrlTable from "@/components/ui/UrlTable";
+import UrlTablePagination from "@/components/ui/UrlTablePagination";
 
 import { parseJWTToken } from "@/lib/jwt";
 import { getMiniUrlPageAPI } from "@/lib/apis/miniurls";
@@ -66,16 +67,41 @@ export default async function Urls({
     throw new Error(apiResp.err);
   }
   return (
-    <div className="sm:w-full md:w-10/12">
-      <h1 className="font-bold text-4xl sm:mt-1 md:mt-6 sm:mb-2 md:mb-5">
+    <div className="sm:w-full md:w-10/12 flex flex-col min-h-0">
+      <h1 className="font-bold text-3xl md:pt-6 sm:pb-2 md:pb-5">
         My Mini Urls
       </h1>
-      <UrlTableFilter
-        baseUrl="/urls"
-        activeFilter={statusParams ?? "All"}
-        availableFilters={statusFilters}
-      />
-      <UrlTable userRole={jwtResp.data?.role!} data={apiResp.data?.data!} />
+      <div className="flex-1 min-h-0">
+        <div className="h-full max-h-full flex flex-col min-h-0">
+          {/* Table Filter takes the height as is */}
+          <div>
+            <UrlTableFilter
+              baseUrl="/urls"
+              activeFilter={statusParams ?? "All"}
+              availableFilters={statusFilters}
+            />
+          </div>
+          {/* Table takes the remaining height. It should also handle for overflow and should not cause the entire page component to stretch and scrollable */}
+          <div className="flex-1 flex flex-col min-h-0">
+            <div className="overflow-scroll">
+              <UrlTable
+                userRole={jwtResp.data?.role!}
+                data={apiResp.data?.data!}
+              />
+            </div>
+            {/* Table Pagination Footer takes the height as is */}
+            <div>
+              <UrlTablePagination
+                limit={limit}
+                offset={offset}
+                totalCount={apiResp.data?.totalCount!}
+                searchParams={params}
+                baseUrl="/urls"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

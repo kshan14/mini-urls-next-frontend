@@ -90,7 +90,6 @@ export default function MiniUrlTable({
     });
     // 2. Invoke server action
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       const errMsg = await updateMiniUrlStatusAction(id, status);
       // 3. Check server returns error. If error is there, throws it and catch block will handle the rest
       if (errMsg) {
@@ -132,7 +131,6 @@ export default function MiniUrlTable({
     });
     // 2. Invoke server action
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       const errMsg = await deleteMiniUrlAction(id);
       // 3. Check server returns error. If error is there, throws it and catch block will handle the rest
       if (errMsg) {
@@ -159,46 +157,75 @@ export default function MiniUrlTable({
     }
   };
   return (
-    <div className="w-full min-h-96 overflow-y-scroll">
-      <table className="w-full overflow-x-scroll">
-        <thead>
-          <tr className="border-b border-b-blue-200 p-1">
-            <th className="text-left sm:p-1 md:p-2">ORIGINAL URL</th>
-            <th className="text-left sm:p-1 md:p-2">MINI URL</th>
-            <th className="text-left sm:p-1 md:p-2">DESCRIPTION</th>
-            <th className="text-left sm:p-1 md:p-2">STATUS</th>
-            <th className="text-left sm:p-1 md:p-2">ACTIONS</th>
+    <table className="w-full max-h-full overflow-scroll">
+      <thead>
+        <tr className="border-b border-gray-300 p-1">
+          <th className="text-left sm:p-1 md:p-2">ORIGINAL URL</th>
+          <th className="text-left sm:p-1 md:p-2">MINI URL</th>
+          <th className="text-left sm:p-1 md:p-2">DESCRIPTION</th>
+          <th className="text-left sm:p-1 md:p-2">STATUS</th>
+          <th className="text-left sm:p-1 md:p-2">ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((d) => (
+          <tr
+            key={d.id}
+            className={clsx(
+              "border-b border-gray-300 p-1",
+              d.isUpdatePerforming && "opacity-50"
+            )}
+          >
+            <td className="text-left sm:p-1 md:p-2 break-all max-w-48">
+              {d.url}
+            </td>
+            <td className="text-left sm:p-1 md:p-2">
+              {d.shortenedUrl}
+              <CopyToClipboardBtn text={d.shortenedUrl} />
+            </td>
+            <td className="text-left sm:p-1 md:p-2 break-all max-w-48">
+              {d.description}
+            </td>
+            {renderStatusCell(d)}
+            <ActionableCell
+              data={d}
+              isAdmin={userRole === AdminRole}
+              isLoading={isLoading}
+              approveOrRejectCb={onApproveOrDenyRecord}
+              deleteCb={onDeleteRecord}
+            />
           </tr>
-        </thead>
-        <tbody>
-          {rows.map((d) => (
-            <tr
-              key={d.id}
-              className={clsx(
-                "border-b border-b-blue-200 p-1 relative",
-                d.isUpdatePerforming && "opacity-50"
-              )}
-            >
-              <td className="text-left sm:p-1 md:p-2 overflow-clip">{d.url}</td>
-              <td className="text-left sm:p-1 md:p-2 flex items-center">
-                {d.shortenedUrl}
-                <CopyToClipboardBtn text={d.shortenedUrl} />
-              </td>
-              <td className="text-left sm:p-1 md:p-2 overflow-clip">
-                {d.description}
-              </td>
-              {renderStatusCell(d)}
-              <ActionableCell
-                data={d}
-                isAdmin={userRole === AdminRole}
-                isLoading={isLoading}
-                approveOrRejectCb={onApproveOrDenyRecord}
-                deleteCb={onDeleteRecord}
-              />
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+        {!rows.length && (
+          <tr>
+            <td colSpan={5}>
+              <div className="flex flex-col items-center justify-center p-8 text-center border-b border-gray-300">
+                <div className="text-gray-400 mb-4">
+                  <svg
+                    className="w-16 h-16 mx-auto"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-16"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  No records found
+                </h3>
+                <p className="text-gray-500 max-w-sm">
+                  There are no records to display at the moment.
+                </p>
+              </div>
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
   );
 }
