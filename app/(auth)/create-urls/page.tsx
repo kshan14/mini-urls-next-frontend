@@ -17,7 +17,7 @@ export default function CreateUrl() {
     initialState
   );
   return (
-    <>
+    <div className="w-full flex flex-col items-center">
       {pending && <LoadingOverlay />}
       {/* Header */}
       <UserFormHeader
@@ -60,6 +60,6 @@ export default function CreateUrl() {
           />
         )}
       </form>
-    </>
+    </div>
   );
 }

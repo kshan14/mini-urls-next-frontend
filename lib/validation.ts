@@ -43,7 +43,7 @@ export const createMiniUrlSchema = z.object({
   description: z
     .string()
     .nonempty("Description is required")
-    .max(2000, "Description cannot exceed 2000 characters"),
+    .max(200, "Description cannot exceed 200 characters"),
 });
 
 export function validateSchema<T extends ZodObject<any>>(

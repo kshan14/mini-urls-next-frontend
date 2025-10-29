@@ -16,13 +16,13 @@ export default async function UrlTableFilter({
   availableFilters,
 }: UrlTableFilterProps) {
   return (
-    <>
+    <div className="overflow-x-auto md:py-2">
       {availableFilters.map((f) => (
         <Link
           key={f}
           href={`${baseUrl}?status=${f}`}
           className={clsx(
-            "rounded-md py-0.5 px-2.5 border text-sm  transition-all shadow-sm mx-1",
+            "rounded-md py-0.5 px-2.5 border text-md shadow-sm mx-1",
             activeFilter === f
               ? "bg-slate-800 text-white border-transparent"
               : "border-slate-300 text-slate-800"
@@ -31,6 +31,6 @@ export default async function UrlTableFilter({
           {f}
         </Link>
       ))}
-    </>
+    </div>
   );
 }
