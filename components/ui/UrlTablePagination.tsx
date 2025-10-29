@@ -111,8 +111,6 @@ export default async function UrlTablePagination({
   // prepare url with existing other params
   const urlToAppend = baseUrl + "?" + baseQueryString;
 
-  const pageSizeLinkStyle = "py-1 px-1.5 text-sm shadow-sm";
-
   const pageLinkStyle =
     "rounded-sm py-1.5 px-3 border text-sm shadow-sm mx-1 hover:bg-slate-300";
 
