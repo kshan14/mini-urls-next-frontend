@@ -157,7 +157,7 @@ export default function MiniUrlTable({
     }
   };
   return (
-    <table className="w-full max-h-full overflow-scroll">
+    <table className="w-full max-h-full">
       <thead>
         <tr className="border-b border-gray-300 p-1">
           <th className="text-left sm:p-1 md:p-2">ORIGINAL URL</th>
@@ -179,7 +179,7 @@ export default function MiniUrlTable({
             <td className="text-left sm:p-1 md:p-2 break-all max-w-48">
               {d.url}
             </td>
-            <td className="text-left sm:p-1 md:p-2">
+            <td className="text-left sm:p-1 md:p-2 flex items-center">
               {d.shortenedUrl}
               <CopyToClipboardBtn text={d.shortenedUrl} />
             </td>

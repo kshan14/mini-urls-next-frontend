@@ -28,7 +28,7 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className="w-full h-full max-h-full flex flex-col">
       <HeaderBar isLoggedIn={isLoggedIn} isAdmin={isAdmin} />
-      <div className="w-full flex-2 min-h-0 flex justify-center">
+      <div className="w-full flex-2 min-h-0 flex md:justify-center">
         {children}
       </div>
     </div>
