@@ -83,7 +83,7 @@ export default async function Urls({
           </div>
           {/* Table takes the remaining height. It should also handle for overflow and should not cause the entire page component to stretch and scrollable */}
           <div className="flex-1 flex flex-col min-h-0">
-            <div className="overflow-scroll">
+            <div>
               <UrlTable
                 userRole={jwtResp.data?.role!}
                 data={apiResp.data?.data!}

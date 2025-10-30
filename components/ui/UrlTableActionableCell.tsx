@@ -22,10 +22,11 @@ const ActionButton = ({
   disabled,
 }: ActionButtonProps): React.ReactNode => {
   const colorMap = {
-    red: "text-red-700 bg-red-100 hover:bg-red-200",
-    green: "text-green-700 bg-green-100 hover:bg-green-200",
+    red: "text-red-700 bg-red-200 border-red-300 hover:bg-red-300 hover:border-red-400",
+    green:
+      "text-green-700 bg-green-200 border-green-300 hover:bg-green-300 hover:border-green-400",
   };
-  const styles = clsx("p-1 font-semibold rounded-sm", colorMap[color]);
+  const styles = clsx("p-2 font-semibold border rounded-sm", colorMap[color]);
   return (
     <button className={styles} disabled={disabled} onClick={onClick}>
       {label}
@@ -56,7 +57,7 @@ export default function ActionableCell({
   const showDeleteBtn = !isAdmin;
   return (
     <td className="min-w-50">
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 p-1">
         {showApproveBtn && (
           <ActionButton
             color="green"
