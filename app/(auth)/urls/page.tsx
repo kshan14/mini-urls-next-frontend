@@ -82,23 +82,23 @@ export default async function Urls({
             />
           </div>
           {/* Table takes the remaining height. It should also handle for overflow and should not cause the entire page component to stretch and scrollable */}
-          <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex-1 flex flex-col min-h-0 overflow-y-scroll">
             <div>
               <UrlTable
                 userRole={jwtResp.data?.role!}
                 data={apiResp.data?.data!}
               />
             </div>
-            {/* Table Pagination Footer takes the height as is */}
-            <div>
-              <UrlTablePagination
-                limit={limit}
-                offset={offset}
-                totalCount={apiResp.data?.totalCount!}
-                searchParams={params}
-                baseUrl="/urls"
-              />
-            </div>
+          </div>
+          {/* Table Pagination Footer takes the height as is */}
+          <div className="p-3.5">
+            <UrlTablePagination
+              limit={limit}
+              offset={offset}
+              totalCount={apiResp.data?.totalCount!}
+              searchParams={params}
+              baseUrl="/urls"
+            />
           </div>
         </div>
       </div>

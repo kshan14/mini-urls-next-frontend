@@ -179,9 +179,11 @@ export default function MiniUrlTable({
             <td className="text-left sm:p-1 md:p-2 break-all max-w-48">
               {d.url}
             </td>
-            <td className="text-left sm:p-1 md:p-2 flex items-center">
-              {d.shortenedUrl}
-              <CopyToClipboardBtn text={d.shortenedUrl} />
+            <td className="text-left sm:p-1 md:p-2 h-full">
+              <div className="flex items-center h-full">
+                {d.shortenedUrl}
+                <CopyToClipboardBtn text={d.shortenedUrl} />
+              </div>
             </td>
             <td className="text-left sm:p-1 md:p-2 break-all max-w-48">
               {d.description}
