@@ -13,6 +13,8 @@ interface AuthLayoutProps {
   children: React.ReactNode;
 }
 
+const { WS_BASE_URL } = env();
+
 export default async function AuthLayout({ children }: AuthLayoutProps) {
   // 1. get jwt data
   const cookieStore = await cookies();
@@ -32,7 +34,7 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
       <HeaderBar
         isLoggedIn={isLoggedIn}
         isAdmin={isAdmin}
-        wsUrl={env.WS_BASE_URL}
+        wsUrl={WS_BASE_URL}
         jwtToken={jwtToken}
       />
       <div className="w-full flex-2 min-h-0 flex md:justify-center">

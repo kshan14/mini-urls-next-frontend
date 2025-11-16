@@ -5,10 +5,12 @@ import { RegisterRequest, RegisterResponse } from "@/lib/apis/register/types";
 import { ErrorResponse } from "@/lib/apis/commonTypes";
 import { InternalServerErrMsg } from "@/lib/apis/commonConsts";
 
+const { API_BASE_URL } = env();
+
 export async function registerAPI(
   req: RegisterRequest
 ): Promise<{ data?: RegisterResponse; err?: string }> {
-  const url = `${env.API_BASE_URL}/api/users`;
+  const url = `${API_BASE_URL}/api/users`;
   try {
     // 1. Send API Request
     const resp = await fetch(url, {
