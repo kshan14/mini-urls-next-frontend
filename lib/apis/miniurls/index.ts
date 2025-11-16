@@ -9,13 +9,14 @@ import {
 import { ErrorResponse, PaginationResponse } from "@/lib/apis/commonTypes";
 import { InternalServerErrMsg } from "@/lib/apis/commonConsts";
 import { URLSearchParams } from "url";
-import { ur } from "zod/locales";
+
+const { API_BASE_URL } = env();
 
 export async function createMiniUrlAPI(
   authToken: string,
   req: CreateMiniUrlRequest
 ): Promise<{ data?: CreateMiniUrlResponse; err?: string }> {
-  const url = `${env.API_BASE_URL}/api/miniurls`;
+  const url = `${API_BASE_URL}/api/miniurls`;
   try {
     // 1. send API request
     const resp = await fetch(url, {
@@ -70,7 +71,7 @@ export async function getMiniUrlPageAPI(
   if (status) {
     searchParams.append("status", status);
   }
-  const url = `${env.API_BASE_URL}/api/miniurls?${searchParams.toString()}`;
+  const url = `${API_BASE_URL}/api/miniurls?${searchParams.toString()}`;
   // 2. Send API Request
   try {
     const resp = await fetch(url, {
@@ -108,7 +109,7 @@ export async function approveMiniUrlAPI(
   authToken: string,
   id: string
 ): Promise<{ err?: string }> {
-  const url = `${env.API_BASE_URL}/api/miniurls/approve/${id}`;
+  const url = `${API_BASE_URL}/api/miniurls/approve/${id}`;
   // 1. Send API Request
   try {
     const resp = await fetch(url, {
@@ -140,7 +141,7 @@ export async function denyMiniUrlAPI(
   authToken: string,
   id: string
 ): Promise<{ err?: string }> {
-  const url = `${env.API_BASE_URL}/api/miniurls/deny/${id}`;
+  const url = `${API_BASE_URL}/api/miniurls/deny/${id}`;
   // 1. Send API Request
   try {
     const resp = await fetch(url, {
@@ -172,7 +173,7 @@ export async function deleteMiniUrlAPI(
   authToken: string,
   id: string
 ): Promise<{ err?: string }> {
-  const url = `${env.API_BASE_URL}/api/miniurls/delete/${id}`;
+  const url = `${API_BASE_URL}/api/miniurls/delete/${id}`;
   // 1. Send API Request
   try {
     const resp = await fetch(url, {

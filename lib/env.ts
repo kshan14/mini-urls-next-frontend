@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-  API_BASE_URL: z.url().min(1, "API_BASE_URL is required"),
+  API_BASE_URL: z.url().min(1, "API_BASE_URL is required").optional(),
   JWT_SECRET_KEY: z.string().nonempty("JWT_SECRET_KEY is required"),
   WS_BASE_URL: z.url().min(1, "WS_BASE_URL is required"),
   NODE_ENV: z
@@ -11,21 +11,24 @@ const envSchema = z.object({
 
 export type EnvConfig = z.infer<typeof envSchema>;
 
-export function getEnv(): EnvConfig {
-  try {
-    const env = {
-      API_BASE_URL: process.env.API_BASE_URL,
-      JWT_SECRET_KEY: atob(process.env.JWT_SECRET_KEY ?? ""),
-      WS_BASE_URL: process.env.WS_BASE_URL,
-      NODE_ENV: process.env.NODE_ENV,
-    };
-    return envSchema.parse(env);
-  } catch (err) {
-    throw err;
-  }
+function getEnv(): EnvConfig {
+  return envSchema.parse({
+    API_BASE_URL: process.env.API_BASE_URL ?? "http://localhost:8080",
+    JWT_SECRET_KEY: atob(
+      process.env.JWT_SECRET_KEY ??
+        "N2JGNCRtQHZKcFpuOCtlWHkkUjEqdUt3RzJjUWhBXnE1b0wjVDlpSzZlQg=="
+    ),
+    WS_BASE_URL:
+      process.env.WS_BASE_URL ?? "ws://localhost:8080/api/miniurls/ws",
+    NODE_ENV: process.env.NODE_ENV,
+  });
 }
 
-// initiate singleton instance
-const env = getEnv();
+let cachedEnv: EnvConfig | null = null;
 
-export default env;
+export default function env() {
+  if (!cachedEnv) {
+    cachedEnv = getEnv();
+  }
+  return cachedEnv;
+}

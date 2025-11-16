@@ -5,6 +5,8 @@ import HeaderBar from "@/components/ui/HeaderBar";
 import { parseJWTToken } from "@/lib/jwt";
 import env from "@/lib/env";
 
+const { WS_BASE_URL } = env();
+
 export default async function Home() {
   // 1. Get token and verify
   const cookieStore = await cookies();
@@ -19,7 +21,7 @@ export default async function Home() {
       isAdmin={isAdmin}
       isLoggedIn={isLoggedIn}
       jwtToken={token}
-      wsUrl={env.WS_BASE_URL}
+      wsUrl={WS_BASE_URL}
     />
   );
 }

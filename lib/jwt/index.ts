@@ -15,6 +15,8 @@ const ClaimsEmailKey =
 const ClaimsRoleKey =
   "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
 
+const { JWT_SECRET_KEY } = env();
+
 export async function parseJWTToken(cookies: ReadonlyRequestCookies): Promise<{
   data?: JWTUser;
   err?: string;
@@ -27,10 +29,7 @@ export async function parseJWTToken(cookies: ReadonlyRequestCookies): Promise<{
   }
   // 3. verify token
   try {
-    const decoded = jwt.verify(
-      token,
-      env.JWT_SECRET_KEY as string
-    ) as JwtPayload;
+    const decoded = jwt.verify(token, JWT_SECRET_KEY as string) as JwtPayload;
     return {
       data: {
         token,

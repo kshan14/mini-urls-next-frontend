@@ -5,10 +5,12 @@ import { LoginRequest, LoginResponse } from "@/lib/apis/login/types";
 import { ErrorResponse } from "@/lib/apis/commonTypes";
 import { InternalServerErrMsg } from "@/lib/apis/commonConsts";
 
+const { API_BASE_URL } = env();
+
 export async function loginAPI(
   req: LoginRequest
 ): Promise<{ data?: LoginResponse; err?: string }> {
-  const url = `${env.API_BASE_URL}/api/login`;
+  const url = `${API_BASE_URL}/api/login`;
   try {
     // 1. send API request
     const resp = await fetch(url, {
