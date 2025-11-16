@@ -62,15 +62,17 @@ export function useNotificationHooks(wsUrl: string, jwtToken: string) {
     ws.onopen = () => {
       console.log(`ws connection connected`);
     };
+    // when ws is closed, try to reconnect every X sec
     ws.onclose = () => {
       console.log(`ws connection disconnected`);
-    };
-    // on error, try to reconnect every X sec
-    ws.onerror = (event) => {
-      console.error(`ws error readyState: ${wsRef.current?.readyState}`);
       wsReconnectTimeoutRef.current = setTimeout(() => {
         connect();
       }, RECONNECT_INTERVAL);
+    };
+    // on error, just close
+    ws.onerror = (event) => {
+      console.error(`ws error readyState: ${wsRef.current?.readyState}`);
+      wsRef.current?.close();
     };
     ws.onmessage = (event) => {
       // check ping message
@@ -99,17 +101,14 @@ export function useNotificationHooks(wsUrl: string, jwtToken: string) {
     };
   };
 
-  const disconnect = useCallback(() => {
-    wsRef.current?.close();
-    if (wsReconnectTimeoutRef.current) {
-      clearTimeout(wsReconnectTimeoutRef.current);
-    }
-  }, []);
-
+  // setup and tear down lifecycle
   useEffect(() => {
     connect();
     return () => {
-      disconnect();
+      wsRef.current?.close();
+      if (wsReconnectTimeoutRef.current) {
+        clearTimeout(wsReconnectTimeoutRef.current);
+      }
     };
   }, []);
 
