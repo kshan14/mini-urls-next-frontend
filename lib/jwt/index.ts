@@ -33,6 +33,7 @@ export async function parseJWTToken(cookies: ReadonlyRequestCookies): Promise<{
     ) as JwtPayload;
     return {
       data: {
+        token,
         id: (decoded[ClaimsIdKey] as string) ?? "",
         email: (decoded[ClaimsEmailKey] as string) ?? "",
         role: (decoded[ClaimsRoleKey] as any) ?? "User",

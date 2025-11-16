@@ -1,11 +1,14 @@
 import React from "react";
 import Link from "next/link";
 
-import HeaderBarLogoutBtn from "./HeaderBarLogoutBtn";
+import HeaderBarNotification from "@/components/ui/HeaderBarNotification";
+import HeaderBarLogoutBtn from "@/components/ui/HeaderBarLogoutBtn";
 
 interface HeaderBarProps {
   isAdmin: boolean;
   isLoggedIn: boolean;
+  jwtToken?: string;
+  wsUrl: string;
 }
 
 const userLinks = [
@@ -19,22 +22,27 @@ const userLinks = [
   },
 ];
 
-const adminAdditionalLink = [
+const adminLinks = [
   {
-    link: "/review-urls",
+    link: "/create-urls",
+    label: "Create New",
+  },
+  {
+    link: "/urls",
     label: "Review Urls",
   },
 ];
 
 const HeaderBar = ({
   isAdmin,
-  isLoggedIn,
+  jwtToken,
+  wsUrl,
 }: HeaderBarProps): React.ReactNode => {
   // copy base line links
   let links = [...userLinks];
-  // if admin , add additional link
+  // if admin , change to admin links
   if (isAdmin) {
-    links = [...userLinks, ...adminAdditionalLink];
+    links = [...adminLinks];
   }
   const renderedLinks = links.map((l) => (
     <div className="flex-1 text-center whitespace-nowrap md:p-2" key={l.label}>
@@ -66,8 +74,11 @@ const HeaderBar = ({
           {/* right side header content */}
           <div className="flex items-center sm:space-x-0 md:space-x-2">
             {renderedLinks}
-            {isLoggedIn ? (
-              <HeaderBarLogoutBtn />
+            {jwtToken ? (
+              <>
+                <HeaderBarNotification jwtToken={jwtToken} wsUrl={wsUrl} />
+                <HeaderBarLogoutBtn />
+              </>
             ) : (
               <Link
                 href={"/login"}
