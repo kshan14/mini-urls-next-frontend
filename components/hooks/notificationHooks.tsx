@@ -52,6 +52,7 @@ export function useNotificationHooks(wsUrl: string, jwtToken: string) {
   const wsRef = useRef<WebSocket | null>(null);
   const wsReconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // connect websocket using jwt token
   const connect = () => {
     const urlParams = new URLSearchParams({
       token: jwtToken,
@@ -75,7 +76,7 @@ export function useNotificationHooks(wsUrl: string, jwtToken: string) {
       wsRef.current?.close();
     };
     ws.onmessage = (event) => {
-      // check ping message
+      // if event.data is empty, it is ping message from backend. Just respond pong and stop to process the message
       if (!event.data) {
         ws.send("pong");
         return;
