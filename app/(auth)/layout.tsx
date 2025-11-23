@@ -1,6 +1,6 @@
 import React from "react";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import HeaderBar from "@/components/ui/HeaderBar";
@@ -25,8 +25,13 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
   const isAdmin = isLoggedIn && resp.data?.role === AdminRole;
   const jwtToken = resp.data?.token;
 
+  // 3. parse headers to get current url
+  const headerList = await headers();
+
   if (!isLoggedIn) {
-    redirect("/login");
+    const pathname = headerList.get("x-pathname") || "";
+    let redirectUrl = pathname ? `/login?redirectUrl=${pathname}` : "/login";
+    redirect(redirectUrl);
   }
 
   return (

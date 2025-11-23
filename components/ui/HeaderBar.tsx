@@ -38,8 +38,8 @@ const HeaderBar = ({
   jwtToken,
   wsUrl,
 }: HeaderBarProps): React.ReactNode => {
-  // copy base line links
-  let links = [...userLinks];
+  // if jwtToken is not present, user hasn't authenticated.
+  let links = jwtToken ? [...userLinks] : [];
   // if admin , change to admin links
   if (isAdmin) {
     links = [...adminLinks];
