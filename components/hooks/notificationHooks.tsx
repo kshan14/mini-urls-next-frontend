@@ -66,6 +66,7 @@ export function useNotificationHooks(wsUrl: string, jwtToken: string) {
     // when ws is closed, try to reconnect every X sec
     ws.onclose = () => {
       console.log(`ws connection disconnected`);
+      wsRef.current?.close();
       wsReconnectTimeoutRef.current = setTimeout(() => {
         connect();
       }, RECONNECT_INTERVAL);
@@ -73,7 +74,6 @@ export function useNotificationHooks(wsUrl: string, jwtToken: string) {
     // on error, just close
     ws.onerror = (event) => {
       console.error(`ws error readyState: ${wsRef.current?.readyState}`);
-      wsRef.current?.close();
     };
     ws.onmessage = (event) => {
       // if event.data is empty, it is ping message from backend. Just respond pong and stop to process the message

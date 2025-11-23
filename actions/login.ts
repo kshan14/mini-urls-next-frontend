@@ -56,6 +56,8 @@ export async function loginAction(
 
   // if login page is accessed indirectly from other protected page, then redirect back to the original page
   const headerList = await headers();
-  const redirectPath = headerList.get("x-pathname") ?? "/register";
+  const searchParamsStr = headerList.get("x-search-params");
+  const searchParams = new URLSearchParams(searchParamsStr || "");
+  const redirectPath = searchParams.get("redirectUrl") ?? "/register";
   redirect(redirectPath);
 }

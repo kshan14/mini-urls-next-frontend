@@ -19,7 +19,6 @@ export default async function Home() {
   let isLoggedIn = resp.data ? true : false;
   let isAdmin = isLoggedIn && resp.data?.role === "Admin";
   let token = resp.data?.token;
-  console.log(`Home Page`);
   return (
     <div className="w-full h-full flex flex-col overflow-y-scroll">
       <HeaderBar
