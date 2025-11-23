@@ -86,6 +86,7 @@ export function useNotificationHooks(wsUrl: string, jwtToken: string) {
         const wsData = JSON.parse(event.data) as NotificationWSData;
         // transform
         const transformedData = TransformToNotiDropdownData(wsData);
+        transformedData.id = crypto.randomUUID(); // as notifications about same url can come multiple times
         setNotiData((prev) => {
           let newData = [...prev];
           // check noti data already hit max count
