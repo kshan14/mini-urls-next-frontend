@@ -23,7 +23,6 @@ This document describes the environment variables required for the application.
   - This is a sensitive value that should be kept secure
   - In production, use a strong, randomly generated secret key
   - Never commit actual secret keys to version control
-- **Format**: Base64 encoded string
 
 ### `WS_BASE_URL`
 

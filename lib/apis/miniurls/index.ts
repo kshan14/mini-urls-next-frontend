@@ -123,7 +123,7 @@ export async function approveMiniUrlAPI(
       return {};
     }
     const jsonData = await resp.json();
-    console.error(`approve miniurl failed: ${jsonData}`);
+    console.error(`approve miniurl failed: ${JSON.stringify(jsonData)}`);
     return {
       err:
         (jsonData as ErrorResponse)?.errors?.[0]?.message ??
