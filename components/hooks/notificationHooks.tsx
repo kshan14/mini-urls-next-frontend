@@ -49,11 +49,21 @@ export function useNotificationHooks(wsUrl: string, jwtToken: string) {
   const [hasReadAll, setHasReadAll] = useState(true);
   // data related to websocket
   const [notiData, setNotiData] = useState<NotiDropdownData[]>([]);
+  const shouldWSConnectRef = useRef<boolean>(true);
+  const isWSConnectingRef = useRef<boolean>(false);
   const wsRef = useRef<WebSocket | null>(null);
   const wsReconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // connect websocket using jwt token
-  const connect = () => {
+  const connect = useCallback(() => {
+    if (!wsUrl || !jwtToken || isWSConnectingRef.current) return;
+    // if connection is still connecting or open, ignore
+    if (
+      wsRef.current?.readyState === WebSocket.OPEN ||
+      wsRef.current?.readyState === WebSocket.CONNECTING
+    )
+      return;
+    isWSConnectingRef.current = true;
     const urlParams = new URLSearchParams({
       token: jwtToken,
     });
@@ -62,18 +72,23 @@ export function useNotificationHooks(wsUrl: string, jwtToken: string) {
 
     ws.onopen = () => {
       console.log(`ws connection connected`);
+      isWSConnectingRef.current = false;
     };
     // when ws is closed, try to reconnect every X sec
     ws.onclose = () => {
       console.log(`ws connection disconnected`);
-      wsRef.current?.close();
-      wsReconnectTimeoutRef.current = setTimeout(() => {
-        connect();
-      }, RECONNECT_INTERVAL);
+      wsRef.current = null;
+      isWSConnectingRef.current = false;
+      // Only reconnect if jwtToken is there
+      if (wsUrl && jwtToken && shouldWSConnectRef.current) {
+        wsReconnectTimeoutRef.current = setTimeout(() => {
+          connect();
+        }, RECONNECT_INTERVAL);
+      }
     };
     // on error, just close
     ws.onerror = (event) => {
-      console.error(`ws error readyState: ${wsRef.current?.readyState}`);
+      ws.close();
     };
     ws.onmessage = (event) => {
       // if event.data is empty, it is ping message from backend. Just respond pong and stop to process the message
@@ -101,18 +116,24 @@ export function useNotificationHooks(wsUrl: string, jwtToken: string) {
         console.error(`ws cannot parse data: ${event.data} with error: ${err}`);
       }
     };
-  };
+  }, [wsUrl, jwtToken]);
 
   // setup and tear down lifecycle
   useEffect(() => {
+    // Only connect if we have both required parameters
+    if (!wsUrl || !jwtToken) return;
     connect();
+
     return () => {
+      isWSConnectingRef.current = false;
+      shouldWSConnectRef.current = false;
       wsRef.current?.close();
       if (wsReconnectTimeoutRef.current) {
         clearTimeout(wsReconnectTimeoutRef.current);
+        wsReconnectTimeoutRef.current = null;
       }
     };
-  }, []);
+  }, [wsUrl, jwtToken, connect]);
 
   // user action on notification button
   const onNotiBtnClick = () => {

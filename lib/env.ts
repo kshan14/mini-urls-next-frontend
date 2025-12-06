@@ -14,10 +14,7 @@ export type EnvConfig = z.infer<typeof envSchema>;
 function getEnv(): EnvConfig {
   return envSchema.parse({
     API_BASE_URL: process.env.API_BASE_URL ?? "http://localhost:8080",
-    JWT_SECRET_KEY: atob(
-      process.env.JWT_SECRET_KEY ??
-        "N2JGNCRtQHZKcFpuOCtlWHkkUjEqdUt3RzJjUWhBXnE1b0wjVDlpSzZlQg=="
-    ),
+    JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
     WS_BASE_URL:
       process.env.WS_BASE_URL ?? "ws://localhost:8080/api/miniurls/ws",
     NODE_ENV: process.env.NODE_ENV,
