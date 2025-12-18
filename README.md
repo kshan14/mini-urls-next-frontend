@@ -2,9 +2,13 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 # Getting Started
 
+# Demo Video
+
+[![Demo Video](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://youtu.be/ToUp9gbN5_Y)
+
 ## TLDR: Run the entire frontend + backend as docker compose
 
-# Local Development Setup
+## Local Development Setup
 
 If you want to run this project locally as containers, follow the steps below:
 
